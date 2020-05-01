@@ -1,0 +1,8 @@
+{
+  "name": "tiza",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "d3": "5.13.0"
+  }
+}
