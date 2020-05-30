@@ -59,123 +59,42 @@ function _loadScript(url, callback) {
 function barChart(options) {
   let sourceData = options.data;
 
-  const yearDataSupplier = [];
-  const yearDataBuyer = [];
-  const yearDataFunder = [];
-  const barColors = {
-    "Importe de contratos como proveedor": "#278529",
-    "Cantidad de contratos como proveedor": "#1b5d1c",
-    "Importe de contratos como comprador": "#db2828",
-    "Cantidad de contratos como comprador": "#991c1c",
-    "Importe de contratos como financiador": "#DA9488",
-    "Cantidad de contratos como financiador": "#af2020"
-  }
+  const yearData = [];
 
-  let year_isSupplier = false;
-  let year_isBuyer = false;
-  let year_isFunder = false;
-  let index_supplier_amount,index_supplier_count,index_buyer_amount,index_buyer_count,index_funder_amount,index_funder_count = null;
+  let index_amount,index_count = null;
 
-  for (y in sourceData) {
-    if (sourceData[y].supplier.value || sourceData[y].supplier.count) {
-      year_isSupplier = true;
-    }
-    if (sourceData[y].buyer.value || sourceData[y].buyer.count) {
-      year_isBuyer = true;
-    }
-    if (sourceData[y].funder.value || sourceData[y].funder.count) {
-      year_isFunder = true;
-    }
-  }
 
-  if (year_isSupplier) {
-    index_supplier_amount = yearDataSupplier.length;
-    yearDataSupplier.push(
-      {
-        "key" : "Importe de contratos como proveedor" ,
-        "bar": true,
+  index_amount = yearData.length;
+  yearData.push(
+    {
+      "key" : options.amountKeyName,
+      "bar": true,
+      "values" : [],
+    }
+  )
+  index_count = yearData.length;
+  yearData.push(
+    {
+        "key" : options.countKeyName,
         "values" : [],
-      }
-    )
-    index_supplier_count = yearDataSupplier.length;
-    yearDataSupplier.push(
-      {
-          "key" : "Cantidad de contratos como proveedor" ,
-          "values" : [],
-          // "color": "#1b5d1c"
-      },
-    )
-  }
-  if (year_isBuyer) {
-    index_buyer_amount = yearDataBuyer.length;
-    yearDataBuyer.push(
-      {
-          "key" : "Importe de contratos como comprador" ,
-          "bar": true,
-          "values" : [],
-          "color": "#db2828"
-      },
-    )
-    index_buyer_count = yearDataBuyer.length;
-    yearDataBuyer.push(
-      {
-          "key" : "Cantidad de contratos como comprador" ,
-          "values" : [],
-          "color": "#991c1c"
-      },
-    )
-  }
-  if (year_isFunder) {
-    index_funder_amount = yearDataFunder.length;
-    yearDataFunder.push(
-      {
-          "key" : "Importe de contratos como financiador" ,
-          "bar": true,
-          "values" : [],
-          "color": "#b6893e"
-      },
-    )
-    index_funder_count = yearDataFunder.length;
-    yearDataFunder.push(
-      {
-          "key" : "Cantidad de contratos como financiador" ,
-          "values" : [],
-          "color": "#5b441f"
-      },
-    )
-  }
+        // "color": "#1b5d1c"
+    },
+  )
+          // "color": "#db2828" amount buyer
+          // "color": "#991c1c" cantidad buyer
+          // "color": "#b6893e" amount funder
+          // "color": "#5b441f" cantidad funder
 
+          
   for (y in sourceData) {
-    if (year_isSupplier) {
-      yearDataSupplier[index_supplier_amount].values.push({
-        x: y,
-        y: sourceData[y].supplier.value
-      })
-      yearDataSupplier[index_supplier_count].values.push({
-        x: y,
-        y: sourceData[y].supplier.count
-      })
-    }
-    if (year_isBuyer) {
-      yearDataBuyer[index_buyer_amount].values.push({
-        x: y,
-        y: sourceData[y].buyer.value
-      })
-      yearDataBuyer[index_buyer_count].values.push({
-        x: y,
-        y: sourceData[y].buyer.count
-      })
-    }
-    if (year_isFunder) {
-      yearDataFunder[index_funder_amount].values.push({
-        x: y,
-        y: sourceData[y].funder.value
-      })
-      yearDataFunder[index_funder_count].values.push({
-        x: y,
-        y: sourceData[y].funder.count
-      })
-    }
+    yearData[index_amount].values.push({
+      x: y,
+      y: sourceData[y].value
+    })
+    yearData[index_count].values.push({
+      x: y,
+      y: sourceData[y].count
+    })
   }
 
 // FUNCIÓN PARA SEPARAR Y DAR UN NUEVO ID Y NUEVA VARIABLES DE YEARDATA PARA CADA UNO
@@ -188,7 +107,7 @@ function charts(idChart, dataChart) {
         .margin({top: 0, right: 30, bottom: 15, left: 100})
         .legendRightAxisHint(' [der.]')
         .legendLeftAxisHint(' [izq.]')
-        .color(function(d,i){ return barColors[d.originalKey]})
+        .color(function(d,i){ return options.barColors[d.originalKey]})
         .focusEnable(false)
 
     chart.y1Axis
@@ -196,7 +115,8 @@ function charts(idChart, dataChart) {
 
     chart.forceX([0]);
 
-    d3.select(idChart+' svg')
+    d3.select(idChart)
+        .append("svg")
         .datum(dataChart)
         .transition().duration(500).call(chart);
 
@@ -209,13 +129,27 @@ function charts(idChart, dataChart) {
   });
 }
 
-charts("#chartSupplier", yearDataSupplier);
-charts("#chartBuyer", yearDataBuyer);
-charts("#chartFunder", yearDataFunder);
+charts(options.target, yearData);
 
 
 }
 // console.log(sourceData)
+
+const barColors = {
+  "supplier": {
+      amount: "#278529",
+      count: "#1b5d1c",
+  },
+
+  "buyer": {
+      amount: "#db2828",
+      count: "#991c1c"
+  },
+  "funder": {
+      amount: "#DA9488",
+      count: "#af2020"
+  }
+}
 
 
 // Pie Chart - nvd3
@@ -223,130 +157,56 @@ charts("#chartFunder", yearDataFunder);
 function pieChart(options) {
   let sourceData = options.data;
 
-  const typeData = {
-    buyer: [],
-    supplier: [],
-    funder: []
-  }
+  const typeData = []
 
-  let isBuyerType = false;
-  let isSupplierType = false;
-  let isFunderType = false;
 
   for (t in sourceData) {
-    if (sourceData[t].buyer.count != 0) {
-      isBuyerType = true;
-    }
-    if (sourceData[t].supplier.count != 0) {
-      isSupplierType = true;
-    }
-    if (sourceData[t].funder.count != 0) {
-      isFunderType = true;
-    }
-    typeData.buyer.push({
+    typeData.push({
       "label": t,
-      "value": sourceData[t].buyer.count
-    })
-    typeData.supplier.push({
-      "label": t,
-      "value": sourceData[t].supplier.count
-    })
-    typeData.funder.push({
-      "label": t,
-      "value": sourceData[t].funder.count
+      "value": sourceData[t].count
     })
   }
 
-  const nameLabels = {
-    "open": "Licitación abierta",
-    "direct": "Adjudicación Directa",
-    "limited": "Invitación a tres",
-    "undefined": "Sin definir",
-    "": "Sin información"
-  }
+  // Pie Chart
+  nv.addGraph(function() {
+    var chart = nv.models.pieChart()
+        .x(function(d) { return options.nameLabels[d.label] })
+        .y(function(d) { return d.value })
+        .color(function (d) { return options.procurementColors[d.label] })
+        .showLabels(true);
 
-  // console.log(typeData);
-  const procurementColors = {
+      d3.select(options.target)
+          .append("svg")
+          .datum(typeData)
+          .transition().duration(350)
+          .call(chart);
+
+    return chart;
+  });
+
+}
+
+
+const procurementColors = {
+  supplier: {
     "open": "#1f6a20",
     "direct": "#8AB283",
     "limited": "#DDF8D7",
     "undefined": "#8b8b8b"
-  }
-
-  // Pie Chart
-  if (isSupplierType) {
-    nv.addGraph(function() {
-      var chart = nv.models.pieChart()
-          .x(function(d) { return nameLabels[d.label] })
-          .y(function(d) { return d.value })
-          .color(function (d) { return procurementColors[d.label] })
-          .showLabels(true);
-
-        d3.select("#piechartSupplier")
-            .append("svg")
-            .datum(typeData.supplier)
-            .transition().duration(350)
-            .call(chart);
-
-      return chart;
-    });
-  }
-
-  const procurementColorsBuyer = {
+  },
+  buyer: {
     "open": "#af2020",
     "direct": "#DA9488",
     "limited": "#FFE5DB",
     "undefined": "#8b8b8b"
-  }
-
-  if (isBuyerType) {
-    nv.addGraph(function() {
-      var chart = nv.models.pieChart()
-          .x(function(d) { return nameLabels[d.label] })
-          .y(function(d) { return d.value })
-          .color(function (d) { return procurementColorsBuyer[d.label] })
-          .showLabels(true)
-
-        d3.select("#piechartBuyer")
-            .append("svg")
-            .datum(typeData.buyer)
-            .transition().duration(350)
-            .call(chart);
-
-
-      return chart;
-    });
-  }
-
-  const procurementColorsFunder = {
+  },
+  funder: {
     "open": "#9f7836",
     "direct": "#e4ac4e",
     "limited": "#ecc483",
     "undefined": "#8b8b8b"
   }
-
-  if (isFunderType) {
-    nv.addGraph(function() {
-      var chart = nv.models.pieChart()
-          .x(function(d) { return nameLabels[d.label] })
-          .y(function(d) { return d.value })
-          .color(function (d) {  return procurementColorsFunder[d.label] })
-          .showLabels(true)
-
-        d3.select("#piechartFunder")
-            .append("svg")
-            .datum(typeData.funder)
-            .transition().duration(350)
-            .call(chart);
-
-
-      return chart;
-    });
-  }
-
-
 }
-
 
 // Force-directed Graph - d3.v4
 function flujosProveedores(options) {
@@ -680,6 +540,8 @@ function flujosProveedores(options) {
 
 
 const tiza = {
+  barColors: barColors,
+  procurementColors: procurementColors,
   yearlyContractsBar: _wait(barChart),
   contractTypePie: _wait(pieChart),
   moneyFlow: _wait(flujosProveedores)
