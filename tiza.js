@@ -10,15 +10,16 @@ let waitOver = false;
 function tiza_init() {
   _loadScript("/tiza/lib/d3.v4.js", function() {
     d4 = d3;
-    _loadScript("/tiza/lib/d3.v3.js");
-    _loadScript("/tiza/lib/nvd3.js", function() {
-      waitOver = true;
-      for (c in callStack) {
-        // console.log(type c, c, type callStack[c], callStack[c])
-        callStack[c].f(callStack[c].p);
-      }
+    _loadScript("/tiza/lib/d3.v3.js", function () {
+      _loadScript("/tiza/lib/nvd3.js", function() {
+        waitOver = true;
+        for (c in callStack) {
+          // console.log(type c, c, type callStack[c], callStack[c])
+          callStack[c].f(callStack[c].p);
+        }
+      });
     });
-});
+  });
 }
 
 
