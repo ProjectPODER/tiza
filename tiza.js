@@ -143,8 +143,12 @@ const barColors = {
   },
 
   "buyer": {
-      amount: "#db2828",
-      count: "#991c1c"
+    amount: "#db2828",
+    count: "#991c1c"
+  },
+  "contactPoint": {
+    amount: "#db2828",
+    count: "#991c1c"
   },
   "funder": {
       amount: "#DA9488",
@@ -196,6 +200,12 @@ const procurementColors = {
     "undefined": "#8b8b8b"
   },
   buyer: {
+    "open": "#af2020",
+    "direct": "#DA9488",
+    "limited": "#FFE5DB",
+    "undefined": "#8b8b8b"
+  },
+  contactPoint: {
     "open": "#af2020",
     "direct": "#DA9488",
     "limited": "#FFE5DB",
