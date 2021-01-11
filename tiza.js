@@ -227,16 +227,16 @@ function flujosProveedores(options) {
   const nodes = sourceData.nodes;
   const links = sourceData.links;
   const node_colors = {
-    "institution": "#aec7e8",
-    "company": "#ff7f0e",
+    "uc": "#aec7e8",
+    "supplier": "#ff7f0e",
     "person": "#ffbb78",
-    "dependency": "#2ca02c",
+    "dependencia": "#2ca02c",
   }
   const node_radius = {
-    "institution": 6,
-    "company": 10,
+    "uc": 6,
+    "supplier": 10,
     "person": 8,
-    "dependency": 10,
+    "dependencia": 10,
   }
   const link_colors = {
     "open": "#98df8a",
