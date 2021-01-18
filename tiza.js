@@ -288,6 +288,10 @@ function flujosProveedores(options) {
   }
 
   var chartDiv = document.getElementById("graph-container");
+  if (!chartDiv) {
+    console.error("tiza.js","flujosProveedores: No graph container");
+    return false;
+  }
   // $(chartDiv).height(500);
   var width = chartDiv.clientWidth;
   var height = chartDiv.clientHeight;
