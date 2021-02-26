@@ -114,7 +114,7 @@ function charts(idChart, dataChart) {
     chart.y1Axis
     .tickFormat(function(d) { return '$' + d3.format(',f')(d) });
 
-    chart.forceX([0]);
+    // chart.forceX(["2020",0]);
 
     d3.select(idChart)
         .append("svg")
@@ -124,7 +124,7 @@ function charts(idChart, dataChart) {
     nv.utils.windowResize(chart.update);
 
     chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
-    console.log(idChart);
+    console.log("tiza",idChart);
     console.log(dataChart);
     return chart;
   });
