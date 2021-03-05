@@ -8,15 +8,19 @@ let callStack = [];
 let waitOver = false;
 
 function tiza_init() {
-  _loadScript("/tiza/lib/d3.v4.js", function() {
+  _loadStyle("/tiza/lib/datatables.min.css", function() {});
+
+  _loadScript("/tiza/lib/d3.v4.min.js", function() {
     d4 = d3;
-    _loadScript("/tiza/lib/d3.v3.js", function () {
-      _loadScript("/tiza/lib/nvd3.js", function() {
-        waitOver = true;
-        for (c in callStack) {
-          // console.log(type c, c, type callStack[c], callStack[c])
-          callStack[c].f(callStack[c].p);
-        }
+    _loadScript("/tiza/lib/d3.v3.min.js", function () {
+      _loadScript("/tiza/lib/nv.d3.min.js", function() {
+        _loadScript("/tiza/lib/datatables.min.js", function() {
+          waitOver = true;
+          for (c in callStack) {
+            // console.log(type c, c, type callStack[c], callStack[c])
+            callStack[c].f(callStack[c].p);
+          }
+        });
       });
     });
   });
@@ -49,6 +53,23 @@ function _loadScript(url, callback) {
 
     // Fire the loading
     head.appendChild(script);
+}
+
+function _loadStyle(url, callback) {
+  // Adding the style tag to the head 
+  var head = document.head;
+  var style = document.createElement('link');
+  style.type = 'text/css';
+  style.rel = 'stylesheet';
+  style.href = url;
+
+  // Then bind the event to the callback function.
+  // There are several events for cross browser compatibility.
+  style.onreadystatechange = callback;
+  style.onload = callback;
+
+  // Fire the loading
+  head.appendChild(style);
 }
 
 
