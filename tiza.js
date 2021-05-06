@@ -158,15 +158,24 @@ charts(options.target, yearData);
 // console.log(sourceData)
 
 const barColors = {
-  "supplier": {
-      amount: "#278529",
-      count: "#1b5d1c",
+  "supplier_contract": {
+    amount: "#278529",
+    count: "#1b5d1c",
   },
 
-  "buyer": {
+  "supplier_purchase": {
+    amount: "#f78529",
+    count: "#fb5d1c",
+  },
+
+  "buyer_contract": {
     amount: "#db2828",
     count: "#991c1c"
   },
+  "buyer_purchase": {
+    amount: "#db2828",
+    count: "#991c1c"
+  },  
   "contactPoint": {
     amount: "#db2828",
     count: "#991c1c"
@@ -214,13 +223,25 @@ function pieChart(options) {
 
 
 const procurementColors = {
-  supplier: {
+  supplier_contract: {
     "open": "#1f6a20",
     "direct": "#8AB283",
     "limited": "#DDF8D7",
     "undefined": "#8b8b8b"
   },
-  buyer: {
+  supplier_purchase: {
+    "open": "#1f6a20",
+    "direct": "#8AB283",
+    "limited": "#DDF8D7",
+    "undefined": "#8b8b8b"
+  },
+  buyer_purchase: {
+    "open": "#af2020",
+    "direct": "#DA9488",
+    "limited": "#FFE5DB",
+    "undefined": "#8b8b8b"
+  },
+  buyer_contract: {
     "open": "#af2020",
     "direct": "#DA9488",
     "limited": "#FFE5DB",
