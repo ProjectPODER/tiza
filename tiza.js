@@ -176,11 +176,11 @@ const barColors = {
     amount: "#db2828",
     count: "#991c1c"
   },  
-  "contactPoint": {
+  "contactPoint_contract": {
     amount: "#db2828",
     count: "#991c1c"
   },
-  "funder": {
+  "funder_contract": {
       amount: "#DA9488",
       count: "#af2020"
   }
@@ -247,13 +247,13 @@ const procurementColors = {
     "limited": "#FFE5DB",
     "undefined": "#8b8b8b"
   },
-  contactPoint: {
+  contactPoint_contract: {
     "open": "#af2020",
     "direct": "#DA9488",
     "limited": "#FFE5DB",
     "undefined": "#8b8b8b"
   },
-  funder: {
+  funder_contract: {
     "open": "#9f7836",
     "direct": "#e4ac4e",
     "limited": "#ecc483",
