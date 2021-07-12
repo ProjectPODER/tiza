@@ -136,6 +136,7 @@ function charts(idChart, dataChart) {
     .tickFormat(function(d) { return '$' + d3.format(',f')(d) });
 
     // chart.forceX(["2020",0]);
+    chart.lines.forceY([0]);
 
     d3.select(idChart)
         .append("svg")
