@@ -127,27 +127,44 @@ function charts(idChart, dataChart) {
     nv.addGraph(function() {
     chart = nv.models.linePlusBarChart()
         .margin({top: 0, right: 30, bottom: 15, left: 100})
-        .legendRightAxisHint(' [der.]')
-        .legendLeftAxisHint(' [izq.]')
+        .legendRightAxisHint(' [der >]')
+        .legendLeftAxisHint(' [< izq]')
         .color(function(d,i){ return options.barColors[d.originalKey]})
         .focusEnable(false)
 
-    chart.y1Axis
-    .tickFormat(function(d) { return '$' + d3.format(',f')(d) });
+      chart.y1Axis
+        .tickFormat(function(d) { return '$' + d3.format(',f')(d) });
 
+      const f = d3.format(".0f")
+      ;
+      chart.y2Axis
+        .tickFormat(f)
+      
     // chart.forceX(["2020",0]);
     chart.lines.forceY([0]);
+    chart.y2Axis.ticks(10)
+      
 
     d3.select(idChart)
         .append("svg")
         .datum(dataChart)
         .transition().duration(500).call(chart);
 
+    if ( chart.y2Axis.domain()[1] < 10) {
+      chart.y2Axis.ticks(Math.round(chart.y2Axis.domain()[1]))
+    }
+              
+    chart.update()
+    
+
     nv.utils.windowResize(chart.update);
 
     chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
     console.log("tiza",idChart);
     console.log(dataChart);
+
+
+
     return chart;
   });
 }
