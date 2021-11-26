@@ -9,17 +9,20 @@ let waitOver = false;
 
 function tiza_init() {
   _loadStyle("/tiza/lib/datatables.min.css", function() {});
+  _loadStyle("/tiza/lib/radar-chart.css", function () { });
 
   _loadScript("/tiza/lib/d3.v4.min.js", function() {
     d4 = d3;
     _loadScript("/tiza/lib/d3.v3.min.js", function () {
       _loadScript("/tiza/lib/nv.d3.min.js", function() {
-        _loadScript("/tiza/lib/datatables.min.js", function() {
-          waitOver = true;
-          for (c in callStack) {
-            // console.log(type c, c, type callStack[c], callStack[c])
-            callStack[c].f(callStack[c].p);
-          }
+        _loadScript("/tiza/lib/radar-chart.min.js", function () {
+          _loadScript("/tiza/lib/datatables.min.js", function() {
+            waitOver = true;
+            for (c in callStack) {
+              // console.log(type c, c, type callStack[c], callStack[c])
+              callStack[c].f(callStack[c].p);
+            }
+          });
         });
       });
     });
@@ -56,7 +59,7 @@ function _loadScript(url, callback) {
 }
 
 function _loadStyle(url, callback) {
-  // Adding the style tag to the head 
+  // Adding the style tag to the head
   var head = document.head;
   var style = document.createElement('link');
   style.type = 'text/css';
@@ -107,7 +110,7 @@ function barChart(options) {
           // "color": "#b6893e" amount funder
           // "color": "#5b441f" cantidad funder
 
-          
+
   for (y in sourceData) {
     yearData[index_amount].values.push({
       x: y,
@@ -139,11 +142,11 @@ function charts(idChart, dataChart) {
       ;
       chart.y2Axis
         .tickFormat(f)
-      
+
     // chart.forceX(["2020",0]);
     chart.lines.forceY([0]);
     chart.y2Axis.ticks(10)
-      
+
 
     d3.select(idChart)
         .append("svg")
@@ -153,9 +156,9 @@ function charts(idChart, dataChart) {
     if ( chart.y2Axis.domain()[1] < 10) {
       chart.y2Axis.ticks(Math.round(chart.y2Axis.domain()[1]))
     }
-              
+
     chart.update()
-    
+
 
     nv.utils.windowResize(chart.update);
 
@@ -193,7 +196,7 @@ const barColors = {
   "buyer_purchase": {
     amount: "#db2828",
     count: "#991c1c"
-  },  
+  },
   "contactPoint_contract": {
     amount: "#db2828",
     count: "#991c1c"
@@ -613,13 +616,64 @@ function flujosProveedores(options) {
   return chart;
 }
 
+// Radar Chart
+function radarChart(options){
+
+  let data = [
+    { className: "Puntajes",
+      axes: []
+    },
+    {
+      className: "Límites",
+      axes: [
+        { axis: categoryName("trans"), value: 100 },
+        { axis: categoryName("temp"), value: 77 },
+        { axis: categoryName("conf"), value: 100 },
+        { axis: categoryName("comp"), value: 100 },
+        { axis: categoryName("traz"), value: 89 }
+      ],
+    }
+]
+  console.log(options, data[0].axes);
+  function categoryName(categoryId){
+    categoryNames = {
+      "trans": "Transparencia",
+      "temp": "Temporalidad",
+      "conf": "Confiabilidad",
+      "comp": "Competitividad",
+      "traz": "Trazabilidad"
+    }
+    return categoryNames[categoryId];
+  }
+
+  if(options.data){
+    for (i in options.data){
+      // if (Object.hasOwnProperty(options.data, i)){
+        data[0].axes.push({axis: categoryName(i), value: (options.data[i] * 100).toFixed(1)})
+      // }
+    }
+  }
+  console.log(data);
+  targetwidth = $(options.target).width()
+  RadarChart.draw(options.target, data, {w: targetwidth});
+  function radarSize(){
+    $(options.target + " svg").remove()
+    targetwidth = $(options.target).width()
+    RadarChart.draw(options.target, data, { w: targetwidth });
+  }
+  nv.utils.windowResize(radarSize);
+  radarSize();
+
+}
+
 
 const tiza = {
   barColors: barColors,
   procurementColors: procurementColors,
   yearlyContractsBar: _wait(barChart),
   contractTypePie: _wait(pieChart),
-  moneyFlow: _wait(flujosProveedores)
+  moneyFlow: _wait(flujosProveedores),
+  radarChart: _wait(radarChart)
 }
 
 tiza_init();
