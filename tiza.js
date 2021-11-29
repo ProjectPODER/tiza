@@ -624,7 +624,7 @@ function radarChart(options){
       axes: []
     },
     {
-      className: "Límites",
+      className: "Máximos",
       axes: [
         { axis: categoryName("trans"), value: 100 },
         { axis: categoryName("temp"), value: 77 },
