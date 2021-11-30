@@ -626,11 +626,11 @@ function radarChart(options){
     {
       className: "Máximos",
       axes: [
-        { axis: categoryName("trans"), value: 100 },
-        { axis: categoryName("temp"), value: 77 },
-        { axis: categoryName("comp"), value: 100 },
-        { axis: categoryName("traz"), value: 89 },
-        { axis: categoryName("conf"), value: 100 }
+        { axis: categoryName("trans"), value: options.max.max_trans * 100 },
+        { axis: categoryName("temp"), value: options.max.max_temp * 100 },
+        { axis: categoryName("comp"), value: options.max.max_comp * 100 },
+        { axis: categoryName("traz"), value: options.max.max_traz * 100 },
+        { axis: categoryName("conf"), value: options.max.max_conf * 100 }
       ],
     }
 ]
