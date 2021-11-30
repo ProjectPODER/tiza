@@ -628,9 +628,9 @@ function radarChart(options){
       axes: [
         { axis: categoryName("trans"), value: 100 },
         { axis: categoryName("temp"), value: 77 },
-        { axis: categoryName("conf"), value: 100 },
         { axis: categoryName("comp"), value: 100 },
-        { axis: categoryName("traz"), value: 89 }
+        { axis: categoryName("traz"), value: 89 },
+        { axis: categoryName("conf"), value: 100 }
       ],
     }
 ]
