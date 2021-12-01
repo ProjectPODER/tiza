@@ -630,10 +630,15 @@ function radarChart(options){
         { axis: categoryName("temp"), value: options.max.max_temp * 100 },
         { axis: categoryName("comp"), value: options.max.max_comp * 100 },
         { axis: categoryName("traz"), value: options.max.max_traz * 100 },
-        { axis: categoryName("conf"), value: options.max.max_conf * 100 }
       ],
     }
-]
+  ]
+  if (options.max.max_conf) {
+    data[1].axes.push(
+      { axis: categoryName("conf"), value: options.max.max_conf * 100 }
+    )     
+  }
+
   console.log(options, data[0].axes);
   function categoryName(categoryId){
     categoryNames = {
